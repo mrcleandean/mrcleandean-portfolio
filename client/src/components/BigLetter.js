@@ -1,9 +1,22 @@
-import { useEffect, useRef, useState } from "react"
-
+import { motion } from "framer-motion"
 export default function BigLetter(props) {
     return (
-        <span className={`text-5xl ${props.l === ' ' ? 'block w-3' : 'inline'} text-white hover:text-blue-300 hover:text-6xl transition-all`}>
-            {props.l}
-        </span>
+        <motion.span 
+            initial={{ fontSize: '0vw', rotateZ: 40 }}
+            animate={{
+                rotateZ: 0,
+                fontSize: `${100/10}vw`, 
+                transition: {delay: props.i > 5 ? (props.i - 1) * 0.13 : props.i * 0.13} 
+            }}
+            whileHover={{
+                rotate: -5,
+                fontSize: `${100/8}vw`,
+                transition: { delay: 0 },
+                color: 'rgb(96 165 250)',
+            }}
+            className={`block ${props.letter === ' ' ? 'w-4' : ''}`}
+            >
+            {props.letter}
+        </motion.span>
     )
 }
