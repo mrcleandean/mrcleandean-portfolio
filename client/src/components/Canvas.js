@@ -14,15 +14,15 @@ export default function Canvas(props) {
     useEffect(() => {
         const canvas = canvasRef.current;
         const ctx = canvas.getContext('2d');
-        let image = new Image();
+        const image = new Image();
         image.src = soap;
-        const imageRatio = 498/372; // -> w / h
-        let imageHeight = 200;
-        let imageWidth = Math.floor(imageRatio * imageHeight);
+        const imageRatio = 372/498; // -> w / h
+        const imageWidth = 240;
+        const imageHeight = Math.floor(imageRatio * imageWidth);
         let x = randomInRange(10, window.innerWidth - imageWidth - 10);
         let y = randomInRange(10, window.innerHeight - imageHeight - 10);
-        let xDirection = true;
-        let yDirection = true;
+        let xDirection = Math.random() > 0.5 ? true : false;
+        let yDirection = Math.random() > 0.5 ? true : false;
         let animationFrameId;
         let animationInterval = 1;
         let timeSinceLastAnimation = 0;

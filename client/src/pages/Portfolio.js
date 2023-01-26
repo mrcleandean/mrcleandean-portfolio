@@ -1,6 +1,5 @@
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useEffect, useState } from 'react';
 import { motion, useMotionValue, useTransform, useCycle } from 'framer-motion';
-import { useDimensions } from '../components/use-dimensions';
 import { MenuToggle } from '../components/MenuToggle';
 import { Navigation } from '../components/Navigation';
 import BigLetter from '../components/BigLetter';
@@ -32,8 +31,8 @@ const sidebar = {
 export default function Portfolio() {
   const [isOpen, toggleOpen] = useCycle(false, true);
   const containerRef = useRef(null);
-  const { height } = useDimensions(containerRef);
-  const x = useMotionValue(65);
+  const [height, setHeight] = useState(1000);
+  const x = useMotionValue(70);
   const namePageColor = useTransform(
     x,
     [-100, -50, 0, 50, 100],
@@ -44,7 +43,16 @@ export default function Portfolio() {
     [-100, -50, 0, 50, 100],
     ['#4c321f', '#9b684e', '#ffa469', '#fcc693', '#fee0b4']
   );
-
+  useEffect(() => {
+    function handleWindowResize() {
+      setHeight(containerRef.current.offsetHeight);
+    }
+    handleWindowResize();
+    window.addEventListener('resize', handleWindowResize);
+    return () => {
+      window.removeEventListener('resize', handleWindowResize);
+    }
+  }, []);
   return (
     <div>
       <ProgressBar zindex="z-40" />
@@ -54,8 +62,9 @@ export default function Portfolio() {
           animate={isOpen ? "open" : "closed"}
           custom={height}
           ref={containerRef}
+          style={{ pointerEvents: isOpen ? "auto" : "none" }}
         >
-          <motion.div className="background" initial={false} animate={isOpen ? "open" : "closed"} variants={sidebar} />
+          <motion.div style={{ background: titleColor }} className="background" initial={false} animate={isOpen ? "open" : "closed"} variants={sidebar} />
           <Navigation />
           <MenuToggle toggle={() => toggleOpen()} />
         </motion.nav>
