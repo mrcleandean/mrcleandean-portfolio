@@ -1,5 +1,6 @@
 import { motion } from "framer-motion"
 export default function BigLetter(props) {
+    
     return (
         <motion.span 
             initial={{ fontSize: '0vw', rotateZ: 40 }}
@@ -11,10 +12,10 @@ export default function BigLetter(props) {
             whileHover={{
                 rotate: -5,
                 fontSize: `${100/8}vw`,
-                transition: { delay: 0 },
-                color: 'rgb(96 165 250)',
+                transition: { delay: 0 }
             }}
             className={`block ${props.letter === ' ' ? 'w-4' : ''}`}
+            style={{ color: props.titleColor }}
             >
             {props.letter}
         </motion.span>
