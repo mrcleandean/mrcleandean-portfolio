@@ -1,20 +1,24 @@
-import { motion, useMotionValue } from 'framer-motion';
+import { motion, useAnimationControls } from 'framer-motion';
 import { useRef, useEffect, useState } from 'react';
 import carouselGifs from '../assets/images/carouselGifs';
+
 export default function Carousel(props) {
     const carouselRef = useRef(null);
     const [carouselConstraint, setCarouselConstraint] = useState(0);
-    const carouselX = useMotionValue(0);
+    const controls = useAnimationControls()
     useEffect(() => {
-        function resizeWindowHandler() {
-            setCarouselConstraint(carouselRef.current.scrollWidth - window.innerWidth);
-        }
-        resizeWindowHandler();
-        window.addEventListener('resize', resizeWindowHandler);
+        setCarouselConstraint(carouselRef.current.scrollWidth - window.innerWidth);
+        const resizeObserver = new ResizeObserver(() => {
+            controls.stop();
+            setTimeout(() => {
+                setCarouselConstraint(carouselRef.current.scrollWidth - window.innerWidth);
+            }, 100);
+        })
+        resizeObserver.observe(document.documentElement);
         return () => {
-            window.removeEventListener('resize', resizeWindowHandler);
+            resizeObserver.disconnect();
         }
-    }, []);
+    }, [controls]);
     return (
         <motion.div
             className="cursor-grab overflow-hidden w-screen h-fit"
@@ -23,14 +27,14 @@ export default function Carousel(props) {
             viewport={{ once: true }}
             whileTap={{ cursor: "grabbing" }}
             ref={carouselRef}
+            key={carouselConstraint}
         >
             <motion.div
-                className="flex"
+                className="flex w-fit"
                 drag="x"
                 initial={{ x: 0 }}
                 dragConstraints={{ left: -carouselConstraint, right: 0 }}
-                style={{ x: carouselX }}
-                key={carouselConstraint}
+                animate={controls}
             >
                 {carouselGifs.map((info, i) => {
                     return (
