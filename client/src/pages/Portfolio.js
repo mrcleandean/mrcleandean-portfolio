@@ -31,7 +31,7 @@ export default function Portfolio() {
     return () => {
       window.removeEventListener('resize', handleWindowResize);
     }
-  });
+  }, []);
   return (
     <div>
       <ProgressBar zindex="z-40" />
