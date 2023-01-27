@@ -28,14 +28,7 @@ export default function Sidebar() {
     const [height, setHeight] = useState(1000);
     const sidebarRef = useRef(null);
     useEffect(() => {
-        function handleWindowResize() {
-            setHeight(sidebarRef.current.offsetHeight);
-        }
-        handleWindowResize();
-        window.addEventListener('resize', handleWindowResize);
-        return () => {
-            window.removeEventListener('resize', handleWindowResize);
-        }
+        setHeight(sidebarRef.current.offsetHeight);
     }, []);
     return (
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 3.8 }} className="fixed z-30">

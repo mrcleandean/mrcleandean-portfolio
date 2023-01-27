@@ -27,12 +27,6 @@ export default function Canvas(props) {
         let animationInterval = 1;
         let timeSinceLastAnimation = 0;
         let lastTime = 0;
-
-        function handleCanvasResize() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-        }
-        window.addEventListener('resize', handleCanvasResize);
         
         const render = (timeStamp = 0) => {
             timeSinceLastAnimation += timeStamp - lastTime;
@@ -55,10 +49,10 @@ export default function Canvas(props) {
             }
             animationFrameId = window.requestAnimationFrame(render, timeStamp);
         }
+        
         render();
         
         return () => {
-            window.removeEventListener('resize', handleCanvasResize);
             window.cancelAnimationFrame(animationFrameId);
         }
     }, []);

@@ -1,24 +1,13 @@
-import { motion, useAnimationControls } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { useRef, useEffect, useState } from 'react';
 import carouselGifs from '../assets/images/carouselGifs';
 
 export default function Carousel(props) {
     const carouselRef = useRef(null);
     const [carouselConstraint, setCarouselConstraint] = useState(0);
-    const controls = useAnimationControls()
     useEffect(() => {
         setCarouselConstraint(carouselRef.current.scrollWidth - window.innerWidth);
-        const resizeObserver = new ResizeObserver(() => {
-            controls.stop();
-            setTimeout(() => {
-                setCarouselConstraint(carouselRef.current.scrollWidth - window.innerWidth);
-            }, 100);
-        })
-        resizeObserver.observe(document.documentElement);
-        return () => {
-            resizeObserver.disconnect();
-        }
-    }, [controls]);
+    }, []);
     return (
         <motion.div
             className="cursor-grab overflow-hidden w-screen h-fit"
@@ -34,7 +23,6 @@ export default function Carousel(props) {
                 drag="x"
                 initial={{ x: 0 }}
                 dragConstraints={{ left: -carouselConstraint, right: 0 }}
-                animate={controls}
             >
                 {carouselGifs.map((info, i) => {
                     return (
