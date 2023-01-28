@@ -52,6 +52,7 @@ export default function Portfolio() {
         <Description 
           des={des}
           titleColor={nameTitleColor}
+          namePageColor={namePageColor}
         />
       </motion.div>
     </div>
