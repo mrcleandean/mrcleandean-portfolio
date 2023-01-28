@@ -11,7 +11,7 @@ const projectsT = 'My Projects'.split('');
 
 export default function Portfolio() {
   let projectTSpace = 0;
-  const [description, setDescription] = useState('default');
+  const [des, setDescription] = useState('d');
   const colorX = useMotionValue(80);
   const namePageColor = useTransform(
     colorX,
@@ -37,7 +37,7 @@ export default function Portfolio() {
       <ProgressBar zindex="z-40" />
       <Sidebar />
       <NamePage namePageColor={namePageColor} nameTitleColor={nameTitleColor} colorX={colorX} />
-      <motion.div className="w-screen h-screen max-h-fit flex flex-col items-center justify-start" style={{ backgroundColor: namePageColor }}>
+      <motion.div className="w-screen min-h-[150vh] h-fit flex flex-col items-center justify-start" style={{ backgroundColor: namePageColor }}>
         <motion.div style={{ backgroundColor: nameTitleColor }} className=' w-screen flex justify-center items-center h-[15vw]'>
           <motion.h1 className="font-bigT flex items-center">
             {projectsT.map((letter, i) => {
@@ -49,7 +49,10 @@ export default function Portfolio() {
           </motion.h1>
         </motion.div>
         <Carousel setDescription={setDescription} />
-        <Description description={description} />
+        <Description 
+          des={des}
+          titleColor={nameTitleColor}
+        />
       </motion.div>
     </div>
   );

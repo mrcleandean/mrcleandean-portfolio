@@ -26,12 +26,11 @@ export default function Carousel(props) {
             >
                 {carouselGifs.map((info, i) => {
                     return (
-                        <motion.div key={i} className='min-h-[17rem] min-w-[17rem] p-4 sm:min-h-[26.5rem] sm:min-w-[26.5rem] sm:p-7 sm:mt-4' onClick={() => props.setDescription(info[1])}>
+                        <motion.div key={i} className='min-h-[17rem] min-w-[17rem] sm:min-h-[26.5rem] sm:min-w-[26.5rem] p-4 sm:p-7 sm:mt-4' onClick={() => props.setDescription(info[1])}>
                             <motion.img
                                 src={info[0]}
                                 alt="Project link gif"
-                                className='w-full h-full rounded-xl hover:cursor-pointer drag'
-                                style={{ userDrag: 'none' }}
+                                className='w-full h-full rounded-xl pointer-events-none'
                                 initial={{ opacity: 0 }}
                                 whileInView={{
                                     opacity: 1,

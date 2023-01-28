@@ -6,12 +6,12 @@ import sortingalgs from './gif5.gif';
 import flappybird from './gif6.gif';
 
 const carouselGifs = [
-    [agario, 'agario'], 
-    [chess, 'chess'], 
-    [forums, 'forums'], 
-    [calculator, 'calculator'], 
-    [sortingalgs, 'sortingalgs'], 
-    [flappybird, 'flappybird']
+    [agario, 'a'], 
+    [chess, 'ch'], 
+    [forums, 'fo'], 
+    [calculator, 'ca'], 
+    [sortingalgs, 's'], 
+    [flappybird, 'fl']
 ];
 
 export default carouselGifs;
