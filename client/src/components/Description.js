@@ -1,126 +1,164 @@
 import { motion, AnimatePresence } from "framer-motion";
+import { AiOutlineClose, AiFillGithub } from 'react-icons/ai'
+import { MdEmojiObjects } from 'react-icons/md';
+import carouselGifs from '../assets/images/carouselGifs';
+import { Link } from "react-router-dom";
 
 const titleObj = {
     'd': {
-        title: 'Drag to see more projects!',
-        fontReduction: 3,
-        description: 'Made with several technologies',
+        mainTitle: '',
+        firstTitle: '',
+        technologies: [],
+        secondTitle: '',
+        description: '',
+        image: '',
         github: '',
         demo: ''
     },
     'a': {
-        title: 'Agar.io Clone',
-        fontReduction: 2,
-        description: 'adsfasdfasdf',
-        github: '',
-        demo: ''
+        mainTitle: 'Agar.io Clone',
+        firstTitle: 'Technologies',
+        technologies: ['JavaScript Canvas', 'p5.js', 'Socket.io'],
+        secondTitle: 'About',
+        description: 'Title says it all, come play my clone of Agar.io! Featuring multiplayer functionality with Socket.io and canvas graphics calculated with p5.js.',
+        image: carouselGifs[0][0],
+        github: 'https://www.google.com/',
+        demo: '/agario'
     },
     'ch': {
-        title: 'Chad Chess',
-        fontReduction: 2,
-        description: 'asdfasdfasdf',
+        mainTitle: 'Chad Chess',
+        firstTitle: 'Technologies',
+        technologies: ['React.js', 'Express.js', 'Socket.io', 'Chess.js', 'Chessboard.js', 'Stockfish.js', 'Tailwindcss'],
+        secondTitle: 'About',
+        description: 'Are you a chad who likes to play chess? Throw down with your fellow chads in my Chad Chess app using Socket.io. Sigma chad? Not to worry, we have a computer game mode for you versus the stockfish engine.',
+        image: carouselGifs[1][0],
         github: '',
-        demo: ''
+        demo: '/chadchess'
     },
     'fo': {
-        title: 'Anon Forums',
-        fontReduction: 2,
-        description: '',
+        mainTitle: 'Anon Forums',
+        firstTitle: 'Technologies',
+        technologies: ['React.js', 'Express.js', 'React Icons', 'MongoDB'],
+        secondTitle: 'About',
+        description: 'Who needs an account? Come post whatever you want on Anon Forums, no sign up necessary. This site self moderates itself so that if your fellow anons downvote bomb you enough, your post is banished from the site forever. Featuring a post cooldown, a reaction cooldown, and a search engine.\nDISCLAIMER: There be dragons be here, do not attribute the content on this site to be representative of me or my views.',
+        image: carouselGifs[2][0],
         github: '',
-        demo: ''
+        demo: '/anonforums'
     },
     'ca': {
-        title: 'JavaScript Calculator',
-        fontReduction: 2,
-        description: '',
+        mainTitle: 'JavaScript Calculator',
+        firstTitle: 'Technologies',
+        technologies: ['Vanilla JavaScript'],
+        secondTitle: 'About',
+        description: 'Are you in need of an internet calculator when you have one on your phone anyway? Great! Come use mine.',
+        image: carouselGifs[3][0],
         github: '',
-        demo: ''
+        demo: '/calculator'
     },
     's': {
-        title: 'Sorting Algorithm Visualizer',
-        fontReduction: 3,
-        description: '',
+        mainTitle: 'Sorting Algorithm Visualizer',
+        firstTitle: 'Technologies',
+        technologies: ['React', 'Redux'],
+        secondTitle: 'About',
+        description: 'Displaying several sorting algorithms, including selection sort, insertion sort, bubble sort, and bogo sort as a joke.',
+        image: carouselGifs[4][0],
         github: '',
-        demo: ''
+        demo: '/sortingviz'
     },
     'fl': {
-        title: 'Flappy Bird Clone',
-        fontReduction: 2,
-        description: '',
+        mainTitle: 'Flappy Bird Clone',
+        firstTitle: 'This Portfolio Was Made With',
+        technologies: ['JavaScript Canvas'],
+        secondTitle: 'About',
+        description: "Ahh yes, the good old days. Come play my flappy bird clone if you don't want to spend 2000 dollars on eBay for an iPhone 5S that still has it installed.",
+        image: carouselGifs[5][0],
         github: '',
-        demo: ''
+        demo: '/flappybird'
+    },
+    'tp': {
+        mainTitle: 'This Portfolio',
+        firstTitle: 'This Portfolio Was Made With',
+        technologies: ['React', 'React-Router', 'JavaScript Canvas', 'Tailwindcss', 'Framer Motion', 'React Icons'],
+        secondTitle: 'About',
+        description: 'I guess this is kind of self explanatory, huh?',
+        image: carouselGifs[6][0],
+        github: '',
+        demo: '/'
     }
 };
 
 export default function Description(props) {
-    let generalSpaceInt = 0;
-    const { titleColor, namePageColor, des } = props;
-    const { title, fontReduction, description } = titleObj[des];
+    const { des, setDescription, namePageColor, nameTitleColor } = props;
+    const { mainTitle, firstTitle, technologies, secondTitle, description, image, github, demo } = titleObj[des];
     return (
-        <div className="flex items-center flex-col w-screen">
-            <div className="h-[15vw] mb-3 flex justify-center items-center -mt-[1.1vh]">
-                <AnimatePresence>
-                    <motion.h1
-                        key={`projectTitle-${props.des}`}
-                        className='font-bigT flex items-center'
-                        exit={{ opacity: 0 }}
-                    >
-                        {title.split('').map((letter, i) => {
-                            if (letter === ' ') generalSpaceInt++;
-                            return (
-                                <motion.span
-                                    key={`projectT-${title}-${i}`}
-                                    className={`block ${letter === ' ' ? ' w-5' : ''}`}
-                                    initial={{
-                                        fontSize: '0vw',
-                                        rotateZ: 40
-                                    }}
-                                    whileInView={{
-                                        rotateZ: 0,
-                                        fontSize: `${100 / 10 - fontReduction}vw`,
-                                        transition: {
-                                            delay: (i - generalSpaceInt) * 0.13 + 1
-                                        }
-                                    }}
-                                    whileHover={{
-                                        rotate: -5,
-                                        fontSize: `${100 / 8 - fontReduction}vw`
-                                    }}
-                                    viewport={{ once: true }}
-                                    style={{ color: titleColor }}
-                                >
-                                    {letter}
-                                </motion.span>
-                            );
-                        })}
-                    </motion.h1>
-                </AnimatePresence>
-            </div>
+        <div className="fixed top-0 right-0 left-0 bottom-0 z-20 flex items-center justify-center pointer-events-none origin-center">
             <AnimatePresence>
-                <motion.div
-                    className="bg-white w-screen h-72 min-h-fit flex flex-col"
-                    initial={{ opacity: 0 }}
-                    whileInView={{
-                        opacity: 1
-                    }}
-                    viewport={{ once: true }}
-                >
-                    <motion.div className="flex items-center h-14 w-full" style={{ backgroundColor: titleColor }}>
-                        <div className="ml-[5vw] flex">
-                            <motion.div className="w-16 h-8 rounded-lg mr-3 flex justify-evenly items-center hover:cursor-pointer" style={{ backgroundColor: namePageColor, color: titleColor }}>GitHub</motion.div>
-                            <motion.div className="w-16 h-8 rounded-lg mr-3 flex justify-evenly items-center hover:cursor-pointer" style={{ backgroundColor: namePageColor, color: titleColor }}>Demo</motion.div>
-                        </div>
-                    </motion.div>
-                    <AnimatePresence>
-                        <motion.p 
-                            key="description-key" 
-                            className="mt-5 ml-[5vw]"
-                            exit={{ opacity: 0 }}
+                {
+                    des !== 'd' && (
+                        <motion.div
+                            key={`projectClicked-${des}`}
+                            className="w-[80vw] max-w-5xl min-h-[24rem] h-fit flex flex-col bg-white origin-center absolute rounded-xl"
+                            initial={{ scale: 0, pointerEvents: 'none' }}
+                            animate={{
+                                scale: 1,
+                                pointerEvents: 'auto',
+                                transition: { delay: 0.5 }
+                            }}
+                            exit={{ scale: 0, pointerEvents: 'none' }}
                         >
-                            {description}
-                        </motion.p>
-                    </AnimatePresence>
-                </motion.div>
+                            <div className="w-full h-16 flex justify-between items-center">
+                                <div className="h-full flex items-center ml-4 ">
+                                    <motion.div
+                                        className=" w-24 h-8 rounded-md flex justify-center items-center mr-1 hover:cursor-pointer"
+                                        style={{ backgroundColor: namePageColor, color: nameTitleColor }}
+                                        whileHover={{ scale: 1.07 }}
+                                    >
+                                        <a href={github}>GitHub</a>
+                                        <AiFillGithub className=" ml-2" />
+                                    </motion.div>
+                                    <Link to={demo}>
+                                        <motion.div
+                                            className=" w-24 h-8 rounded-md flex justify-center items-center ml-2 hover:cursor-pointer"
+                                            style={{ backgroundColor: namePageColor, color: nameTitleColor }}
+                                            whileHover={{ scale: 1.07 }}
+                                        >
+                                            <p>Demo</p>
+                                            <MdEmojiObjects className=" ml-2" />
+                                        </motion.div>
+                                    </Link>
+                                </div>
+                                <motion.div
+                                    className="w-12 h-12 mr-4 mt-2 rounded-full hover:cursor-pointer flex justify-center items-center"
+                                    style={{ backgroundColor: namePageColor, color: nameTitleColor }}
+                                    onClick={() => setDescription('d')}
+                                >
+                                    <AiOutlineClose size={30} />
+                                </motion.div>
+                            </div>
+                            <div className="flex justify-between flex-col sm:flex-row font-bigT">
+                                <div className="ml-6 mr-6 mb-6 mt-2">
+                                    <h1 className="text-4xl mb-3">{mainTitle}</h1>
+                                    <h2 className=" text-2xl mb-2">{firstTitle}</h2>
+                                    <ol className=" ml-9 mb-2">
+                                        {technologies.map((tech, i) => <li key={i} className="text-xl m-0 mt-1">{tech}</li>)}
+                                    </ol>
+                                    <h2 className="text-2xl mb-2">{secondTitle}</h2>
+                                    <p className=" mb-4 ml-6" style={{ whiteSpace: 'pre-wrap' }}>{description}</p>
+                                </div>
+                                <div className="flex justify-center">
+                                    <div className="w-40 h-40 mb-4 sm:mb-0 sm:mt-4 sm:mr-8 rounded-lg">
+                                        <img
+                                            src={image}
+                                            className=" w-full h-full rounded-lg border-2 border-slate-500"
+                                            alt="project"
+                                        ></img>
+                                    </div>
+                                </div>
+                            </div>
+                        </motion.div>
+                    )
+                }
+
             </AnimatePresence>
         </div>
     )

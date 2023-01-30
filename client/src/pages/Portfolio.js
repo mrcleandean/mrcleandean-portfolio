@@ -8,10 +8,11 @@ import Sidebar from '../components/Sidebar';
 import NamePage from '../components/NamePage';
 
 const projectsT = 'My Projects'.split('');
-
+const unerProjectsT = 'Drag to see more!'.split('');
 export default function Portfolio() {
   let projectTSpace = 0;
-  const [des, setDescription] = useState('d');
+  let generalSpaceInt = 0;
+  const [description, setDescription] = useState('d');
   const colorX = useMotionValue(80);
   const namePageColor = useTransform(
     colorX,
@@ -37,22 +38,31 @@ export default function Portfolio() {
       <ProgressBar zindex="z-40" />
       <Sidebar />
       <NamePage namePageColor={namePageColor} nameTitleColor={nameTitleColor} colorX={colorX} />
-      <motion.div className="w-screen min-h-[150vh] h-fit flex flex-col items-center justify-start" style={{ backgroundColor: namePageColor }}>
-        <motion.div style={{ backgroundColor: nameTitleColor }} className=' w-screen flex justify-center items-center h-[15vw]'>
+      <motion.div className="w-screen h-fit min-h-[100vh] flex flex-col items-center justify-start" style={{ backgroundColor: namePageColor }}>
+        <motion.div style={{ backgroundColor: nameTitleColor }} className=' w-screen flex justify-center items-center h-[10.5vw]'>
           <motion.h1 className="font-bigT flex items-center">
             {projectsT.map((letter, i) => {
               if (letter === ' ') projectTSpace++;
               return (
-                <BigLetter key={i} letter={letter} titleColor={namePageColor} delay={0.3} fontReduction={2.2} i={i - projectTSpace} />
+                <BigLetter key={i} letter={letter} titleColor={namePageColor} delay={0.3} fontReduction={3.5} i={i - projectTSpace} />
               );
             })}
           </motion.h1>
         </motion.div>
         <Carousel setDescription={setDescription} />
+        <motion.h1 className="font-bigT flex items-center justify-center h-[12.5vh]">
+          {unerProjectsT.map((letter, i) => {
+            if (letter === ' ') generalSpaceInt++;
+            return (
+              <BigLetter key={i} letter={letter} titleColor={nameTitleColor} delay={0.6} fontReduction={4.5} i={i - generalSpaceInt} />
+            );
+          })}
+        </motion.h1>
         <Description 
-          des={des}
-          titleColor={nameTitleColor}
+          des={description} 
+          setDescription={setDescription} 
           namePageColor={namePageColor}
+          nameTitleColor={nameTitleColor}
         />
       </motion.div>
     </div>
