@@ -32,10 +32,23 @@
 // }
 
 const split = (g, p) => {
-    let r = g.player.r;
-    let A = Math.PI * (r ** 2);
-    let newA = A / 2;
-    
-    console.log('Split!');
+    g.players.forEach(player => {
+        if (player.r < 50) return;
+        let newArea = (Math.PI * player.r ** 2) / 2;
+        let newR = Math.sqrt(newArea / Math.PI);
+        player.r = newR;
+        g.players.push({
+            color: player.color,
+            x: player.x,
+            y: player.x,
+            r: newR,
+            toR: newR,
+            xDir: player.xDir,
+            yDir: player.xDir,
+            angle: player.angle,
+            vel: player.vel * 1.5
+        });
+    });
+    console.log(g.players.length, g.players[0].r);
 }
 export default split;

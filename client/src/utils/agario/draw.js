@@ -21,7 +21,6 @@ const draw = (g, p) => {
         p.ctx.fill();
     });
     g.players.forEach(player => {
-        console.log(player);
         let { x, y, r, color } = player;
         p.ctx.fillStyle = color;
         p.ctx.beginPath();

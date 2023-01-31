@@ -30,11 +30,17 @@ export default function Agario() {
     // g for Game
     const g = {
         players: [{
+            color: p.playerColors[Math.floor(Math.random() * p.playerColors.length)],
             x: Math.random() * p.canvasWidth,
             y: Math.random() * p.canvasHeight,
             r: 30,
+            matrix: [1,0,0,1,0,0],
             toR: 30,
-            color: p.playerColors[Math.floor(Math.random() * p.playerColors.length)]
+            xDir: null,
+            yDir: null,
+            angle: null,
+            vel: null,
+            active: true
         }],
         enemies: [],
         food: [],
@@ -46,12 +52,13 @@ export default function Agario() {
     useEffect(() => {
         p.canvas = canvasRef.current;
         p.ctx = p.canvas.getContext('2d');
-        p.ctx.translate(-g.players[0].x + window.innerWidth / 2, -g.players[0].y + window.innerHeight / 2);
+        p.ctx.translate(-g.players[0].x + window.innerWidth / 2, -g.players[0].y + window.innerHeight / 2)
         initFood(g, p);
         initGrid(g, p);
         const handleMouseMove = (e) => {
-            g.mouseX = e.clientX;
-            g.mouseY = e.clientY;
+            const { e: xTrans, f: yTrans } = p.ctx.getTransform();
+            g.mouseX = e.clientX - xTrans;
+            g.mouseY = e.clientY - yTrans;
         }
         const handleKeyDown = (e) => {
             if (e.key === ' ') split(g, p);
