@@ -2,11 +2,29 @@ import Back from '../components/Back';
 import { useEffect, useRef } from 'react';
 
 const playerColors = ['red', 'orange', 'yellow', 'green', 'blue', 'indigo', 'violet'];
+const canvasWidth = 4000;
+const canvasHeight = 2500;
+const extraWidth = canvasWidth - window.innerWidth;
+const extraHeight = canvasHeight - window.innerHeight;
+const foodSize = 8;
 
 export default function Agario() {
     const canvasRef = useRef(null);
-    const draw = (ctx, player, food) => {
-        ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+    const draw = (ctx, player, food, gridX, gridY) => {
+        ctx.clearRect(-extraWidth, -extraHeight, canvasWidth + extraWidth * 2, canvasHeight + extraHeight * 2);
+        // Draw Grid
+        gridX.forEach(yCoor => {
+            ctx.beginPath();
+            ctx.moveTo(0, yCoor);
+            ctx.lineTo(canvasWidth, yCoor);
+            ctx.stroke();
+        });
+        gridY.forEach(xCoor => {
+            ctx.beginPath();
+            ctx.moveTo(xCoor, 0);
+            ctx.lineTo(xCoor, canvasHeight);
+            ctx.stroke();
+        });
         // Draw Food
         food.forEach(blob => {
             let { x, y, r, color } = blob;
@@ -16,6 +34,7 @@ export default function Agario() {
             ctx.stroke();
             ctx.fill();
         });
+
         // Draw Player
         let { x, y, r, color } = player;
         ctx.fillStyle = color;
@@ -25,9 +44,13 @@ export default function Agario() {
         ctx.fill();
     }
     function move(player, mouseX, mouseY, ctx) {
-        const yAxis = ctx.canvas.width / 2;
-        const xAxis = ctx.canvas.height / 2;
-        let hVel = 3.5;
+        const yAxis = window.innerWidth / 2;
+        const xAxis = window.innerHeight / 2;
+        const d = 30;
+        let A = Math.PI * player.r ** 2;
+        let m = d * A;
+        const p = 960000 + m;
+        let hVel = p / m;
         let xDis = Math.abs(mouseX - yAxis);
         let yDis = Math.abs(mouseY - xAxis);
         if ((yAxis === mouseX && xAxis === mouseY) || (xDis < player.r - 3 && yDis < player.r - 3)) return { xVel: 0, yVel: 0 }
@@ -42,9 +65,15 @@ export default function Agario() {
         let angle = Math.abs(Math.atan(yDis / xDis));
         let yVel = Math.abs(Math.sin(angle) * hVel) * yDir;
         let xVel = Math.sqrt(hVel ** 2 - yVel ** 2) * xDir;
-        ctx.translate(-xVel, -yVel);
-        player.x += xVel;
-        player.y += yVel;
+
+        let onXRight = player.x + player.r >= canvasWidth && xDir > 0;
+        let onXLeft = player.x - player.r <= 0 && xDir < 0;
+        let onYTop = player.y - player.r <= 0 && yDir < 0;
+        let onYBottom = player.y + player.r >= canvasHeight && yDir > 0;
+
+        ctx.translate(onXLeft || onXRight ? 0 : -xVel, onYTop || onYBottom ? 0 : -yVel);
+        player.x += onXLeft || onXRight ? 0 : xVel;
+        player.y += onYTop || onYBottom ? 0 : yVel;
     }
     const eat = (player, food, ctx) => {
         for (let i = food.length - 1; i >= 0; i--) {
@@ -55,27 +84,36 @@ export default function Agario() {
                 let newR = Math.sqrt(blob.r ** 2 + player.r ** 2);
                 food.splice(i, 1);
                 food.push({
-                    x: Math.random() * ctx.canvas.width,
-                    y: Math.random() * ctx.canvas.height,
-                    r: 5,
+                    x: Math.random() * canvasWidth,
+                    y: Math.random() * canvasHeight,
+                    r: foodSize,
                     color: playerColors[Math.floor(Math.random() * playerColors.length)],
                 })
-                player.r = newR;
+                player.toR = newR;
             }
+            if (player.r < player.toR) player.r += 0.00008;
         }
     }
     const update = (player, food, mouseX, mouseY, ctx) => {
         eat(player, food, ctx);
         move(player, mouseX, mouseY, ctx);
     }
-    const initFood = (food, ctx) => {
-        for (let i = 0; i < 900; i++) {
+    const initFood = (food) => {
+        for (let i = 0; i < 800; i++) {
             food.push({
-                x: Math.random() * ctx.canvas.width,
-                y: Math.random() * ctx.canvas.height,
-                r: 5,
+                x: Math.random() * canvasWidth,
+                y: Math.random() * canvasHeight,
+                r: foodSize,
                 color: playerColors[Math.floor(Math.random() * playerColors.length)],
             })
+        }
+    }
+    const initGrid = (gridX, gridY) => {
+        for (let i = 0; i <= Math.floor(canvasHeight); i += 70) {
+            gridX.push(i)
+        }
+        for (let i = 1; i <= Math.floor(canvasWidth); i += 70) {
+            gridY.push(i)
         }
     }
     useEffect(() => {
@@ -89,16 +127,21 @@ export default function Agario() {
         let lastTime = 0;
         // Player
         const player = {
-            x: Math.floor(ctx.canvas.width / 2),
-            y: Math.floor(ctx.canvas.height / 2),
-            r: 20,
+            x: Math.random() * canvasWidth,
+            y: Math.random() * canvasHeight,
+            r: 30,
+            toR: 30,
             color: playerColors[Math.floor(Math.random() * playerColors.length)]
         }
-        let mouseX = player.x;
-        let mouseY = player.y;
-        // Food
-        let food = [];
-        initFood(food, ctx);
+        ctx.translate(-player.x + window.innerWidth / 2, -player.y + window.innerHeight / 2);
+        let mouseX = window.innerWidth / 2;
+        let mouseY = window.innerHeight / 2;
+        // Food and grid
+        const food = [];
+        const gridX = [];
+        const gridY = [];
+        initFood(food);
+        initGrid(gridX, gridY);
         // Listeners
         const handleMouseMove = (e) => {
             mouseX = e.clientX;
@@ -112,7 +155,7 @@ export default function Agario() {
             lastTime = timeStamp;
             if (timeSinceLastAnimation > animationInterval) {
                 update(player, food, mouseX, mouseY, ctx);
-                draw(ctx, player, food);
+                draw(ctx, player, food, gridX, gridY);
                 timeSinceLastAnimation = 0;
             }
             animationFrameId = window.requestAnimationFrame(render, timeStamp);
@@ -128,7 +171,9 @@ export default function Agario() {
     return (
         <div>
             <Back zindex={'z-20'} title={'Agar.io Clone'} />
-                <canvas ref={canvasRef} className="absolute top-[-1000px] right-[-1000px] left-[-1000px] bottom-[-1000px]" width={2000 + window.innerWidth} height={2000 + window.innerHeight}></canvas>
+            <div className='overflow-hidden absolute top-0 right-0 bottom-0 left-0 flex items-start justify-start'>
+                <canvas ref={canvasRef} className={`absolute top-0 left-0 right-[-${extraWidth}px] bottom-[-${extraHeight}px]`} width={canvasWidth} height={canvasHeight}></canvas>
+            </div>
         </div>
     )
 }
