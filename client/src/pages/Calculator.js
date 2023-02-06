@@ -7,6 +7,7 @@ export default function Calculator() {
     const bS = w * 0.8 * 0.25;
     const [eq, setEq] = useState('0');
     const [display, setDisplay] = useState('0');
+    
     return (
         <div>
             <Back zindex={'z-10'} title={'Calculator'} sub={'In Development'} ver={'1.0.0'} />
@@ -133,7 +134,13 @@ function Button(props) {
                                     setOperator(props.display, props.eq, props.setEq, '+');
                                     return;
                                 case '=':
-                                    
+                                    let result = 0;
+                                    let operator = null;
+                                    for (let i = 0; i < props.eq.length; i++) {
+                                        if (isOperator(props.eq[i])) {
+                                            
+                                        }
+                                    }
                                     return;
                             }
                             if (pendingOperator(props.eq)) props.setDisplay(button.val);
@@ -154,7 +161,14 @@ function pendingOperator(eq) {
         || last === 'x'
         || last === '/'
     )
-    
+}
+function isOperator(val) {
+    return (
+        val === '+'
+        || val === '-'
+        || val === 'x'
+        || val === '/'
+    )
 }
 
 function setOperator(disp, eq, setEq, op) {
