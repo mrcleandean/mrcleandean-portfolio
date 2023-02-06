@@ -28,26 +28,30 @@ export default function Agario() {
         lastTime: 0
     }
     // g for Game
+    const initialX = Math.random() * p.canvasWidth;
+    const initialY = Math.random() * p.canvasHeight;
     const g = {
         players: [{
             color: p.playerColors[Math.floor(Math.random() * p.playerColors.length)],
-            x: Math.random() * p.canvasWidth,
-            y: Math.random() * p.canvasHeight,
+            x: initialX,
+            y: initialY,
             r: 30,
-            matrix: [1,0,0,1,0,0],
             toR: 30,
-            xDir: null,
-            yDir: null,
-            angle: null,
-            vel: null,
-            active: true
+            xDir: 1,
+            yDir: 1,
+            angle: 0,
+            hVel: 0,
+            xVel: 0,
+            yVel: 0,
+            active: false
         }],
         enemies: [],
         food: [],
         gridX: [],
         gridY: [],
-        mouseX: window.innerWidth * 0.5,
-        mouseY: window.innerHeight * 0.5
+        mouseX: initialX,
+        mouseY: initialY,
+        mouseActive: false
     }
     useEffect(() => {
         p.canvas = canvasRef.current;
@@ -55,10 +59,16 @@ export default function Agario() {
         p.ctx.translate(-g.players[0].x + window.innerWidth / 2, -g.players[0].y + window.innerHeight / 2)
         initFood(g, p);
         initGrid(g, p);
+        let mouseInactive;
         const handleMouseMove = (e) => {
             const { e: xTrans, f: yTrans } = p.ctx.getTransform();
             g.mouseX = e.clientX - xTrans;
             g.mouseY = e.clientY - yTrans;
+            g.mouseActive = true;
+            clearTimeout(mouseInactive);
+            mouseInactive = setTimeout(() => {
+                g.mouseActive = false;
+            }, 20);
         }
         const handleKeyDown = (e) => {
             if (e.key === ' ') split(g, p);
@@ -79,13 +89,14 @@ export default function Agario() {
         render();
         return () => {
             window.cancelAnimationFrame(a.animationFrameId);
+            clearTimeout(mouseInactive);
             window.removeEventListener('mousemove', handleMouseMove);
             window.removeEventListener('keydown', handleKeyDown);
         }
     }, []);
     return (
         <div>
-            <Back zindex={'z-20'} title={'Agar.io Clone'} />
+            <Back zindex={'z-20'} title={'Agar.io Clone'} sub={'In Development'} ver={'1.0.0'} />
             <div className='overflow-hidden absolute top-0 right-0 bottom-0 left-0 flex items-start justify-start'>
                 <canvas ref={canvasRef} className={`absolute top-0 left-0 right-[-${p.extraWidth}px] bottom-[-${p.extraHeight}px]`} width={p.canvasWidth} height={p.canvasHeight}></canvas>
             </div>

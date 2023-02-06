@@ -27,6 +27,11 @@ const draw = (g, p) => {
         p.ctx.arc(x, y, r, 0, 2 * Math.PI);
         p.ctx.stroke();
         p.ctx.fill();
+        p.ctx.fillStyle = 'white';
+        p.ctx.textBaseline = 'middle';
+        p.ctx.textAlign = 'center';
+        p.ctx.font = "15px monospace";
+        p.ctx.fillText(`${Math.floor(r)}`, x, y);
     });
 }
 export default draw;
