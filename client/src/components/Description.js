@@ -88,7 +88,7 @@ const titleObj = {
 };
 
 export default function Description(props) {
-    const { des, setDescription, namePageColor, nameTitleColor } = props;
+    const { des, setDescription } = props;
     const { mainTitle, firstTitle, technologies, secondTitle, description, image, github, demo } = titleObj[des];
     return (
         <div className="fixed top-0 right-0 left-0 bottom-0 z-20 flex items-center justify-center pointer-events-none origin-center">
@@ -110,7 +110,7 @@ export default function Description(props) {
                                 <div className="h-full flex items-center ml-4 ">
                                     <motion.div
                                         className=" w-24 h-8 rounded-md flex justify-center items-center mr-1 hover:cursor-pointer"
-                                        style={{ backgroundColor: namePageColor, color: nameTitleColor }}
+                                        style={{ backgroundColor: 'black', color: '' }}
                                         whileHover={{ scale: 1.07 }}
                                     >
                                         <a href={github}>GitHub</a>
@@ -119,7 +119,7 @@ export default function Description(props) {
                                     <Link to={demo}>
                                         <motion.div
                                             className=" w-24 h-8 rounded-md flex justify-center items-center ml-2 hover:cursor-pointer"
-                                            style={{ backgroundColor: namePageColor, color: nameTitleColor }}
+                                            style={{ backgroundColor: 'black', color: '#89CFF0' }}
                                             whileHover={{ scale: 1.07 }}
                                         >
                                             <p>Demo</p>
@@ -129,7 +129,7 @@ export default function Description(props) {
                                 </div>
                                 <motion.div
                                     className="w-12 h-12 mr-4 mt-2 rounded-full hover:cursor-pointer flex justify-center items-center"
-                                    style={{ backgroundColor: namePageColor, color: nameTitleColor }}
+                                    style={{ backgroundColor: 'black', color: '#89CFF0' }}
                                     onClick={() => setDescription('d')}
                                 >
                                     <AiOutlineClose size={30} />

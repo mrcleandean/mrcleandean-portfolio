@@ -93,6 +93,7 @@ export default function Agario() {
             window.removeEventListener('mousemove', handleMouseMove);
             window.removeEventListener('keydown', handleKeyDown);
         }
+        // eslint-disable-next-line
     }, []);
     return (
         <div>

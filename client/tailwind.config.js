@@ -8,7 +8,7 @@ module.exports = {
     extend: {
       fontFamily: {
         bigT: [
-          'Fjalla One', 
+          'Lobster', 
           ...defaultTheme.fontFamily.sans
         ]
       }

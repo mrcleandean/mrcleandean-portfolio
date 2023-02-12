@@ -23,7 +23,7 @@ const sidebar = {
     }
 };
 
-export default function Sidebar() {
+export default function Sidebar(props) {
     const [isOpen, toggleOpen] = useCycle(false, true);
     const [height, setHeight] = useState(1000);
     const sidebarRef = useRef(null);
@@ -31,7 +31,7 @@ export default function Sidebar() {
         setHeight(sidebarRef.current.offsetHeight);
     }, []);
     return (
-        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 3.8 }} className="fixed z-30">
+        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 3.8 }} className={`fixed ${props.zindex}`}>
             <motion.nav
                 initial={false}
                 animate={isOpen ? "open" : "closed"}

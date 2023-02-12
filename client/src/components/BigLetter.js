@@ -26,7 +26,7 @@ export default function BigLetter(props) {
                 fontSize: `${100 / 8 - props.fontReduction}vw`,
                 transition: { delay: 0 }
             }}
-            className={`block ${props.letter === ' ' ? 'w-4' : ''}`}
+            className={`flex justify-center items-center ${props.letter === ' ' ? 'w-4' : ''} h-[12vw]`}
             style={{ color: props.titleColor }}
         >
             {props.letter}

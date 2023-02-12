@@ -1,27 +1,39 @@
 import { motion } from 'framer-motion';
 import Canvas from '../components/Canvas';
 import BigLetter from '../components/BigLetter';
+import ReactTypingEffect from 'react-typing-effect';
 const bigT = 'Clean Dean'.split('');
-export default function NamePage(props) {
+
+export default function NamePage() {
     let bigTSpace = 0;
     return (
         <div className='relative w-screen h-screen'>
-            <motion.div style={{ backgroundColor: props.namePageColor }} className="w-screen h-screen absolute z-0" />
+            <motion.div style={{ backgroundColor: 'black' }} className="w-screen h-screen absolute z-0" />
             <Canvas zindex="z-10" />
-            <motion.div className={`w-screen h-screen flex justify-center items-center flex-col absolute z-20`}>
-                <motion.div drag dragConstraints={{ top: 0, right: 0, bottom: 0, left: 0 }} className="mb-1 flex justify-center flex-col items-center">
+            <motion.div className={`flex justify-center items-center w-screen h-screen sm:w-fit sm:h-fit sm:items-start flex-col absolute z-20 sm:left-[18vw] sm:top-[20vh]`}>
+                <motion.div drag dragConstraints={{ top: 0, right: 0, bottom: 0, left: 0 }} className="mb-1 flex justify-center flex-col items-start">
                     <motion.h1 className="font-bigT flex items-center">
                         {bigT.map((letter, i) => {
                             if (letter === ' ') bigTSpace++;
                             return (
-                                <BigLetter key={i} letter={letter} titleColor={ props.nameTitleColor } delay={0} fontReduction={0} i={i - bigTSpace} />
+                                <BigLetter key={i} letter={letter} titleColor={i > 5 ? 'white' : '#89CFF0'} delay={0} fontReduction={window.innerWidth <= 640 ? -4 : 1} i={i - bigTSpace} />
                             );
                         })}
                     </motion.h1>
-                    <motion.p style={{ color: props.nameTitleColor }} initial={{ fontSize: '0px' }} animate={{ fontSize: '18px' }} transition={{ delay: 2.8 }} className="font-mono -mt-3">Web Developer</motion.p>
-                </motion.div>
-                <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 3.8 }} style={{ 'width': '200px' }} className='flex justify-center items-center h-2 bg-white mt-4 rounded-2xl'>
-                    <motion.div drag="x" dragConstraints={{ left: -100, right: 100 }} style={{ x: props.colorX }} className='bg-white rounded-full w-5 h-5 border-2 border-blue-100' />
+                    <ReactTypingEffect
+                        text={["Web Developer", "Entrepreneur", "Programmer", "Keyboard Wizard"]}
+                        speed={100}
+                        typingDelay={2800}
+                        eraseDelay={1000}
+                        eraseSpeed={100}
+                        cursorRenderer={cursor => <h1 className="cursor text-white" style={{ fontSize: window.innerWidth <= 640 ? '5vw' : '2.5vw' }}>{cursor}</h1>}
+                        displayTextRenderer={(text, i) => {
+                            return (
+                                <motion.p style={{ color: 'white', fontSize: window.innerWidth <= 640 ? '5vw' : '2.5vw' }} className="font-mono font-bold relative top-[1vh] sm:top-0">{text}</motion.p>
+                            )
+                        }}
+                    />
+                    {/*  */}
                 </motion.div>
             </motion.div>
         </div>
